@@ -1,0 +1,36 @@
+{
+  "defaultModel": "kilo-auto/balanced",
+  "defaultProvider": "kilo",
+  "defaultThinkingLevel": "high",
+  "lastChangelogVersion": "0.74.0",
+  "packages": [
+    "npm:@ollama/pi-web-search",
+    "npm:pi-subagents",
+    "npm:pi-free"
+  ],
+  "subagents": {
+    "agentOverrides": {
+      "planner": {
+        "model": "ollama/deepseek-v4-pro:cloud",
+        "thinking": "high"
+      },
+      "scout": {
+        "model": "ollama/gemma4:31b-cloud",
+        "thinking": "low"
+      },
+      "worker": {
+        "model": "ollama/glm-5.1:cloud"
+      },
+      "researcher": {
+        "model": "ollama/deepseek-v4-pro:cloud",
+        "thinking": "medium"
+      },
+      "reviewer": {
+        "model": "ollama/glm-5.1:cloud",
+        "thinking": "high"
+      }
+    }
+  },
+  "theme": "dracula",
+  "transport": "websocket-cached"
+}
