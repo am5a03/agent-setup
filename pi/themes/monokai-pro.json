@@ -1,0 +1,82 @@
+{
+  "$schema": "https://raw.githubusercontent.com/badlogic/pi-mono/main/packages/coding-agent/src/modes/interactive/theme/theme-schema.json",
+  "name": "monokai-pro",
+  "vars": {
+    "bg": "#2d2a2e",
+    "surface": "#403e41",
+    "highlight": "#575759",
+    "yellow": "#ffd866",
+    "pink": "#ff6188",
+    "green": "#a9dc76",
+    "orange": "#fc9867",
+    "purple": "#ab9df2",
+    "cyan": "#78dce8",
+    "red": "#ff6188",
+    "white": "#fcfcfa",
+    "muted": "#727072"
+  },
+  "colors": {
+    "accent": "yellow",
+    "border": "highlight",
+    "borderAccent": "cyan",
+    "borderMuted": "#4a484b",
+    "success": "green",
+    "error": "red",
+    "warning": "yellow",
+    "muted": "muted",
+    "dim": "highlight",
+    "text": "",
+    "thinkingText": "muted",
+
+    "selectedBg": "#4d4b4e",
+    "userMessageBg": "surface",
+    "userMessageText": "",
+    "customMessageBg": "#4a3d4a",
+    "customMessageText": "",
+    "customMessageLabel": "purple",
+    "toolPendingBg": "#262426",
+    "toolSuccessBg": "#263026",
+    "toolErrorBg": "#302626",
+    "toolTitle": "",
+    "toolOutput": "white",
+
+    "mdHeading": "orange",
+    "mdLink": "cyan",
+    "mdLinkUrl": "muted",
+    "mdCode": "yellow",
+    "mdCodeBlock": "white",
+    "mdCodeBlockBorder": "highlight",
+    "mdQuote": "muted",
+    "mdQuoteBorder": "highlight",
+    "mdHr": "highlight",
+    "mdListBullet": "yellow",
+
+    "toolDiffAdded": "green",
+    "toolDiffRemoved": "pink",
+    "toolDiffContext": "muted",
+
+    "syntaxComment": "#727072",
+    "syntaxKeyword": "#ff6188",
+    "syntaxFunction": "#a9dc76",
+    "syntaxVariable": "#fcfcfa",
+    "syntaxString": "#ffd866",
+    "syntaxNumber": "#ab9df2",
+    "syntaxType": "#78dce8",
+    "syntaxOperator": "#ff6188",
+    "syntaxPunctuation": "#fcfcfa",
+
+    "thinkingOff": "highlight",
+    "thinkingMinimal": "muted",
+    "thinkingLow": "green",
+    "thinkingMedium": "cyan",
+    "thinkingHigh": "yellow",
+    "thinkingXhigh": "pink",
+
+    "bashMode": "green"
+  },
+  "export": {
+    "pageBg": "#2d2a2e",
+    "cardBg": "#403e41",
+    "infoBg": "#4d4840"
+  }
+}
