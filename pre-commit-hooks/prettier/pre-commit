@@ -1,0 +1,41 @@
+# Format staged files with Prettier, then re-stage the formatted paths so the
+# formatting changes are included in the commit.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+STAGED_LIST="$(mktemp)"
+trap 'rm -f "$STAGED_LIST"' EXIT INT HUP
+
+# Collect staged files that match Prettier's supported extensions
+git diff --cached --name-only --diff-filter=ACMR \
+  | grep -E '\.(ts|tsx|js|jsx|mjs|cjs|json|css|md|mdx|yaml|yml)$' \
+  > "$STAGED_LIST" || true
+
+# Nothing to format — exit early
+[ ! -s "$STAGED_LIST" ] && exit 0
+
+# Run Prettier on every staged file
+xargs npx prettier --write --log-level warn < "$STAGED_LIST"
+
+# Re-stage only the files that Prettier actually changed on disk
+needs_add=false
+while IFS= read -r path; do
+  [ -z "$path" ] && continue
+  if ! git diff --quiet -- "$path" 2>/dev/null; then
+    needs_add=true
+    break
+  fi
+done < "$STAGED_LIST"
+
+[ "$needs_add" = false ] && exit 0
+
+# Brief retries: editors / other tools sometimes briefly hold .git/index.lock
+n=0
+until git add --pathspec-from-file="$STAGED_LIST"; do
+  n=$((n + 1))
+  if [ "$n" -ge 20 ]; then
+    echo "husky: git add failed after retries. Another Git process may be using this repo." >&2
+    echo "husky: If no other git command is running: rm -f .git/index.lock" >&2
+    exit 1
+  fi
+  sleep 0.1
+done

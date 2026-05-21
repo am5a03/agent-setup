@@ -1,0 +1,35 @@
+# Run Biome on staged files, then re-stage those paths so formatting and safe fixes are included in the commit.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+
+STAGED_LIST="$(mktemp)"
+trap 'rm -f "$STAGED_LIST"' EXIT INT HUP
+git diff --cached --name-only --diff-filter=ACMR >"$STAGED_LIST" || true
+
+[ ! -s "$STAGED_LIST" ] && exit 0
+
+pnpm check:staged
+
+# If nothing changed on disk vs the index, skip `git add`. That avoids touching the index when Biome
+# processed no files (or made no edits), which sidesteps `.git/index.lock` races with other Git clients.
+needs_add=false
+while IFS= read -r path; do
+  [ -z "$path" ] && continue
+  if ! git diff --quiet -- "$path" 2>/dev/null; then
+    needs_add=true
+    break
+  fi
+done <"$STAGED_LIST"
+
+[ "$needs_add" = false ] && exit 0
+
+# Brief retries: Cursor / other tools sometimes overlap with `git commit` and briefly hold the index.
+n=0
+until git add --pathspec-from-file="$STAGED_LIST"; do
+  n=$((n + 1))
+  if [ "$n" -ge 20 ]; then
+    echo "husky: git add failed after retries. Another Git process may be using this repo, or .git/index.lock is stale." >&2
+    echo "husky: If no other git command is running: rm -f .git/index.lock" >&2
+    exit 1
+  fi
+  sleep 0.1
+done
